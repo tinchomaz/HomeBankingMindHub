@@ -1,9 +1,17 @@
 ﻿using HomeBankingMindHub.Models;
 
-namespace HomeBankingMindHub.Models
+using System;
+
+
+
+namespace HomeBankingMindHub.dtos
+
 {
-    public class Account
+
+    public class AccountDTO
+
     {
+
         public long Id { get; set; }
 
         public string Number { get; set; }
@@ -12,8 +20,6 @@ namespace HomeBankingMindHub.Models
 
         public double Balance { get; set; }
 
-        public Client Client { get; set; }
-
-        public long ClientId { get; set; }
     }
+
 }
