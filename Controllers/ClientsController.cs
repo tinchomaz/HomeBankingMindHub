@@ -1,7 +1,5 @@
-﻿using HomeBankingMindHub.dtos;
-
-using HomeBankingMindHub.Models;
-
+﻿using HomeBankingMindHub.Models;
+using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories;
 
 using Microsoft.AspNetCore.Http;
@@ -182,6 +180,33 @@ namespace HomeBankingMindHub.Controllers
 
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult Post(ClientFormDTO clientDTO)
+        {
+            try
+            {
+                if (clientDTO == null)
+                {
+                    return BadRequest("El cliente no puede ser nulo");
+                }
+
+                var newClient = new Client
+                {
+                    Email = clientDTO.Email,
+                    FirstName = clientDTO.FirstName,
+                    LastName = clientDTO.LastName
+                };
+
+                _clientRepository.Save(newClient);
+
+                return CreatedAtAction(nameof(Get), new { id = newClient.Id }, newClient);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
     }

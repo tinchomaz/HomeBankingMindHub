@@ -18,6 +18,8 @@ builder.Services.AddDbContext<HomeBankingContext>(options => options.UseSqlServe
 
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();    
+
 var app = builder.Build();
 
 app.MapControllers();
@@ -34,6 +36,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+
+app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseRouting();

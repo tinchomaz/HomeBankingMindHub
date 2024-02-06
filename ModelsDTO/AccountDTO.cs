@@ -1,10 +1,9 @@
 ﻿using HomeBankingMindHub.Models;
-
 using System;
 
 
 
-namespace HomeBankingMindHub.dtos
+namespace HomeBankingMindHub.ModelsDTO
 
 {
 
@@ -19,6 +18,8 @@ namespace HomeBankingMindHub.dtos
         public DateTime CreationDate { get; set; }
 
         public double Balance { get; set; }
+
+        public ICollection<TransactionDTO> Transactions { get; set; }
 
     }
 

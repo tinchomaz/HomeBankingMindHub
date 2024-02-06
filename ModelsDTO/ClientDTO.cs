@@ -1,12 +1,11 @@
 ﻿using HomeBankingMindHub.Models;
-
 using System.Collections.Generic;
 
 using System.Text.Json.Serialization;
 
 
 
-namespace HomeBankingMindHub.dtos
+namespace HomeBankingMindHub.ModelsDTO
 
 {
 
