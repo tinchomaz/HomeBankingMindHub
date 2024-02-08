@@ -1,4 +1,5 @@
-﻿using HomeBankingMindHub.Models;
+﻿using HomeBankingMindHub.dtos;
+using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories;
 
@@ -52,8 +53,6 @@ namespace HomeBankingMindHub.Controllers
 
                 var clients = _clientRepository.GetAllClients();
 
-
-
                 var clientsDTO = new List<ClientDTO>();
 
 
@@ -77,7 +76,6 @@ namespace HomeBankingMindHub.Controllers
                         Accounts = client.Accounts.Select(ac => new AccountDTO
 
                         {
-
                             Id = ac.Id,
 
                             Balance = ac.Balance,
@@ -87,6 +85,7 @@ namespace HomeBankingMindHub.Controllers
                             Number = ac.Number
 
                         }).ToList(),
+
                         Loans = client.ClientLoans.Select(cl => new ClientLoanDTO
                         {
                             Id = cl.Id,
@@ -94,8 +93,28 @@ namespace HomeBankingMindHub.Controllers
                             Name = cl.Loan.Name,
                             Amount = cl.Amount,
                             Payments = int.Parse(cl.Payments)
-                        }).ToList()
+                        }).ToList(),
 
+                        Credits = client.ClientLoans.Select(cl => new ClientLoanDTO
+                        {
+                            Id = cl.Id,
+                            LoanId = cl.LoanId,
+                            Name = cl.Loan.Name,
+                            Amount = cl.Amount,
+                            Payments = int.Parse(cl.Payments)
+                        }).ToList(),
+
+                        Cards = client.Cards.Select(c => new CardDTO
+                        {
+                            Id = c.Id,
+                            CardHolder = c.CardHolder,
+                            Color = c.Color,
+                            Cvv = c.Cvv,
+                            FromDate = c.FromDate,
+                            Number = c.Number,
+                            ThruDate = c.ThruDate,
+                            Type = c.Type
+                        }).ToList()
                     };
 
 
@@ -161,16 +180,12 @@ namespace HomeBankingMindHub.Controllers
                     Accounts = client.Accounts.Select(ac => new AccountDTO
 
                     {
-
                         Id = ac.Id,
-
                         Balance = ac.Balance,
-
                         CreationDate = ac.CreationDate,
-
                         Number = ac.Number
-
                     }).ToList(),
+
                     Loans = client.ClientLoans.Select(cl => new ClientLoanDTO
                     {
                         Id = cl.Id,
@@ -178,6 +193,27 @@ namespace HomeBankingMindHub.Controllers
                         Name = cl.Loan.Name,
                         Amount = cl.Amount,
                         Payments = int.Parse(cl.Payments)
+                    }).ToList(),
+
+                    Credits = client.ClientLoans.Select(cl => new ClientLoanDTO
+                    {
+                        Id = cl.Id,
+                        LoanId = cl.LoanId,
+                        Name = cl.Loan.Name,
+                        Amount = cl.Amount,
+                        Payments = int.Parse(cl.Payments)
+                    }).ToList(),
+
+                    Cards = client.Cards.Select(c => new CardDTO
+                    {
+                        Id = c.Id,
+                        CardHolder = c.CardHolder,
+                        Color = c.Color,
+                        Cvv = c.Cvv,
+                        FromDate = c.FromDate,
+                        Number = c.Number,
+                        ThruDate = c.ThruDate,
+                        Type = c.Type
                     }).ToList()
 
                 };

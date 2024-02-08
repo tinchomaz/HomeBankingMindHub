@@ -1,4 +1,5 @@
-﻿using HomeBankingMindHub.Models;
+﻿using HomeBankingMindHub.dtos;
+using HomeBankingMindHub.Models;
 using System.Collections.Generic;
 
 using System.Text.Json.Serialization;
@@ -26,6 +27,8 @@ namespace HomeBankingMindHub.ModelsDTO
         public ICollection<AccountDTO> Accounts { get; set; }
 
         public ICollection<ClientLoanDTO> Loans { get; set; }
+        public ICollection<ClientLoanDTO> Credits { get; set; }
+        public ICollection<CardDTO> Cards { get; set; }
 
     }
 
