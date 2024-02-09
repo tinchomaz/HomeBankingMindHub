@@ -78,7 +78,7 @@ namespace HomeBankingMindHub.Controllers
 
                             Id = ts.Id,
 
-                            Type = ts.Type,
+                            Type = ts.Type.ToString(),
 
                             Amount = ts.Amount,
 
@@ -154,7 +154,7 @@ namespace HomeBankingMindHub.Controllers
 
                             Id = ts.Id,
 
-                            Type = ts.Type,
+                            Type = ts.Type.ToString(),
 
                             Amount = ts.Amount,
 
