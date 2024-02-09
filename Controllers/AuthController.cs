@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System;
 using HomeBankingMindHub.Models;
 using HomeBankingMindHub.dtos;
+using HomeBankingMindHub.ModelsDTO;
 
 namespace HomeBankingMindHub.Controllers
 {
@@ -24,7 +25,7 @@ namespace HomeBankingMindHub.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] Client client)
+        public async Task<IActionResult> Login([FromBody] SignUpClientDTO client)
         {
             try
             {

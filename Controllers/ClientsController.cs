@@ -295,7 +295,7 @@ namespace HomeBankingMindHub.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Client client)
+        public IActionResult Post([FromBody] SignUpClientDTO client)
         {
             try
             {
