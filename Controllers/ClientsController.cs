@@ -1,4 +1,5 @@
 ﻿using HomeBankingMindHub.dtos;
+using HomeBankingMindHub.Lib;
 using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories;
@@ -314,7 +315,7 @@ namespace HomeBankingMindHub.Controllers
                 Client newClient = new Client
                 {
                     Email = client.Email,
-                    Password = client.Password,
+                    Password = Hashing.HashPassword(client.Password),
                     FirstName = client.FirstName,
                     LastName = client.LastName,
                 };

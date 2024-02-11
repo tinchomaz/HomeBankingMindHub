@@ -11,6 +11,7 @@ using System;
 using HomeBankingMindHub.Models;
 using HomeBankingMindHub.dtos;
 using HomeBankingMindHub.ModelsDTO;
+using HomeBankingMindHub.Lib;
 
 namespace HomeBankingMindHub.Controllers
 {
@@ -30,7 +31,7 @@ namespace HomeBankingMindHub.Controllers
             try
             {
                 Client user = _clientRepository.FindByEmail(client.Email);
-                if (user == null || !String.Equals(user.Password, client.Password))
+                if (user == null || !Hashing.VerifyPassword(client.Password,user.Password))
                     return Unauthorized();
 
                 var claims = new List<Claim>
