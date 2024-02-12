@@ -5,7 +5,7 @@ using HomeBankingMindHub.Repositories;
 using Microsoft.AspNetCore.Http;
 
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.IdentityModel.Tokens;
 using System;
 
 using System.Collections.Generic;
@@ -57,51 +57,55 @@ namespace HomeBankingMindHub.Controllers
                 var accountsDTO = new List<AccountDTO>();
 
 
-
-                foreach (Account account in accounts)
-
+                if (accountsDTO.Any())
                 {
-
-                    var newAccountDTO = new AccountDTO
+                    return StatusCode(204);
+                }else
+                {
+                    foreach (Account account in accounts)
 
                     {
 
-                        Id = account.Id,
-
-                        Number = account.Number,
-
-                        CreationDate = account.CreationDate,
-
-                        Transactions = account.Transactions.Select(ts => new TransactionDTO
+                        var newAccountDTO = new AccountDTO
 
                         {
 
-                            Id = ts.Id,
+                            Id = account.Id,
 
-                            Type = ts.Type.ToString(),
+                            Number = account.Number,
 
-                            Amount = ts.Amount,
+                            CreationDate = account.CreationDate,
 
-                            Description = ts.Description,
+                            Transactions = account.Transactions.Select(ts => new TransactionDTO
 
-                            Date = ts.Date
+                            {
 
-                        }).ToList()
+                                Id = ts.Id,
 
-                    };
+                                Type = ts.Type.ToString(),
+
+                                Amount = ts.Amount,
+
+                                Description = ts.Description,
+
+                                Date = ts.Date
+
+                            }).ToList()
+
+                        };
 
 
 
-                    accountsDTO.Add(newAccountDTO);
+                        accountsDTO.Add(newAccountDTO);
 
+                    }
+
+
+
+
+
+                    return Ok(accountsDTO);
                 }
-
-
-
-
-
-                return Ok(accountsDTO);
-
             }
 
             catch (Exception ex)
