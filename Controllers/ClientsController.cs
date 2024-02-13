@@ -56,8 +56,6 @@ namespace HomeBankingMindHub.Controllers
 
                 var clientsDTO = new List<ClientDTO>();
 
-
-
                 foreach (Client client in clients)
 
                 {
@@ -123,10 +121,9 @@ namespace HomeBankingMindHub.Controllers
                     clientsDTO.Add(newClientDTO);
 
                 }
-
-
-
-
+                //PREGUNTAR POR QUE NO DEVUELVE EL MENSAJE
+                if (clientsDTO.Count() == 0)
+                    return StatusCode(204,"No hay Clientes");
 
                 return Ok(clientsDTO);
 
@@ -142,8 +139,7 @@ namespace HomeBankingMindHub.Controllers
 
         }
 
-
-
+        //Get para recibir por id
         [HttpGet("{id}")]
 
         public IActionResult Get(long id)
@@ -159,12 +155,8 @@ namespace HomeBankingMindHub.Controllers
                 if (client == null)
 
                 {
-
-                    return Forbid();
-
+                    return NotFound();
                 }
-
-
 
                 var clientDTO = new ClientDTO
 
@@ -302,15 +294,13 @@ namespace HomeBankingMindHub.Controllers
             {
                 //validamos datos antes
                 if (String.IsNullOrEmpty(client.Email) || String.IsNullOrEmpty(client.Password) || String.IsNullOrEmpty(client.FirstName) || String.IsNullOrEmpty(client.LastName))
-                    return StatusCode(403, "datos inválidos");
+                    return StatusCode(401, "datos inválidos");
 
                 //buscamos si ya existe el usuario
                 Client user = _clientRepository.FindByEmail(client.Email);
 
                 if (user != null)
-                {
                     return StatusCode(403, "Email está en uso");
-                }
 
                 Client newClient = new Client
                 {

@@ -12,6 +12,7 @@ using HomeBankingMindHub.Models;
 using HomeBankingMindHub.dtos;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Lib;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HomeBankingMindHub.Controllers
 {
@@ -26,13 +27,16 @@ namespace HomeBankingMindHub.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] SignUpClientDTO client)
+        public async Task<IActionResult> Login([FromBody] LoginClientDTO client)
         {
             try
             {
+                if (client.Email.IsNullOrEmpty() || client.Password.IsNullOrEmpty())
+                    return StatusCode(401, "Falta informacion en alguno de los campos");
+
                 Client user = _clientRepository.FindByEmail(client.Email);
                 if (user == null || !Hashing.VerifyPassword(client.Password,user.Password))
-                    return Unauthorized();
+                    return StatusCode(401,"Credenciales invalida");
 
                 var claims = new List<Claim>
                 {

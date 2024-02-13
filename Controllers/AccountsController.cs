@@ -38,8 +38,6 @@ namespace HomeBankingMindHub.Controllers
 
         }
 
-
-
         [HttpGet]
 
         public IActionResult Get()
@@ -49,29 +47,20 @@ namespace HomeBankingMindHub.Controllers
             try
 
             {
-
                 var accounts = _accountRepository.GetAllAccounts();
-
-
 
                 var accountsDTO = new List<AccountDTO>();
 
-
-                if (accountsDTO.Any())
-                {
-                    return StatusCode(204);
-                }else
+                if (!(accounts.Count() == 0))
                 {
                     foreach (Account account in accounts)
 
                     {
-
                         var newAccountDTO = new AccountDTO
-
                         {
 
                             Id = account.Id,
-
+                            
                             Number = account.Number,
 
                             CreationDate = account.CreationDate,
@@ -94,17 +83,15 @@ namespace HomeBankingMindHub.Controllers
 
                         };
 
-
-
                         accountsDTO.Add(newAccountDTO);
 
                     }
-
-
-
-
-
                     return Ok(accountsDTO);
+                }
+                //Si no existen accounts devuelve el mensaje,Funciona pero no hay nada,si no funciona seria un 404
+                else
+                {
+                    return StatusCode(204, "Sin Cuentas en el sistema");
                 }
             }
 
@@ -133,18 +120,11 @@ namespace HomeBankingMindHub.Controllers
                 var account = _accountRepository.FindById(id);
 
                 if (account == null)
-
-                {
-                    return Forbid();
-                }
-
-
+                    return NotFound();
 
                 var accountDTO = new AccountDTO
 
                 {
-
-
                         Id = account.Id,
 
                         Number = account.Number,
