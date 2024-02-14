@@ -22,6 +22,7 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
+builder.Services.AddScoped<ICardRepository, CardRepository>();
 //autenticación
 
 
