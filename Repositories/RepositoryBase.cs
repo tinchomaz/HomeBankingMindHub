@@ -5,6 +5,7 @@ using System;
 using HomeBankingMindHub.Models;
 using Microsoft.EntityFrameworkCore;
 using HomeBankingMindHub.Models;
+using HomeBankingMindHub.Repositories.Interfaces;
 
 namespace HomeBankingMindHub.Repositories
 {

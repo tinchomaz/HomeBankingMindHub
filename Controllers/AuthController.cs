@@ -1,5 +1,4 @@
-﻿using HomeBankingMindHub.Repositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,7 @@ using HomeBankingMindHub.dtos;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Lib;
 using Microsoft.IdentityModel.Tokens;
+using HomeBankingMindHub.Repositories.Interfaces;
 
 namespace HomeBankingMindHub.Controllers
 {

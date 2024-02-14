@@ -2,8 +2,7 @@
 using HomeBankingMindHub.Lib;
 using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
-using HomeBankingMindHub.Repositories;
-
+using HomeBankingMindHub.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 using Microsoft.AspNetCore.Mvc;
@@ -30,16 +29,14 @@ namespace HomeBankingMindHub.Controllers
 
         private IClientRepository _clientRepository;
 
+        private IAccountRepository _accountRepository;
 
+        private ICardRepository _cardRepository;
 
         public ClientsController(IClientRepository clientRepository)
-
         {
-
             _clientRepository = clientRepository;
-
         }
-
 
 
         [HttpGet]
@@ -319,6 +316,62 @@ namespace HomeBankingMindHub.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-    }
 
+        [HttpPost("account")]
+        public IActionResult CreateCard([FromBody] AccountDTO accountDTO)
+        {
+            try
+            {
+                var newAccount = new Account
+                {
+                    Number = accountDTO.Number,
+                    CreationDate = accountDTO.CreationDate,
+                    Balance = accountDTO.Balance,
+                    Transactions = new List<Transaction>()
+                };
+
+                _accountRepository.Save(newAccount);
+
+                return Created("", newAccount);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("card")]
+        public IActionResult CreateCard([FromBody] CardDTO cardDto)
+        {
+            try
+            {
+                // Aquí puedes realizar la validación de los datos de la tarjeta si es necesario
+                // Por ejemplo, verificar si todos los campos requeridos están presentes
+
+                // Crear un objeto Card a partir del DTO recibido
+                var newCard = new Card
+                {
+                    CardHolder = cardDto.CardHolder,
+                    Color = cardDto.Color,
+                    Cvv = cardDto.Cvv,
+                    FromDate = cardDto.FromDate,
+                    Number = cardDto.Number,
+                    ThruDate = cardDto.ThruDate,
+                    Type = cardDto.Type
+                };
+
+                // Guardar la nueva tarjeta en el repositorio
+                _clientRepository.CreateCard(newCard);
+
+                // Devolver una respuesta exitosa
+                return Created("", newCard); // Puedes cambiar la URL de ubicación si tienes una forma de obtenerla
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+    }
 }
