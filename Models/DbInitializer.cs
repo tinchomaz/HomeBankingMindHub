@@ -25,9 +25,9 @@ namespace HomeBankingMindHub.Models
                 {
                     var accounts = new Account[]
                     {
-                        new Account {ClientId = accountVictor.Id, CreationDate = DateTime.Now, Number = "VIN001", Balance = 0 },
-                        new Account {ClientId = accountVictor.Id, CreationDate = DateTime.Now, Number = "VIN002", Balance = 0 },
-                        new Account {ClientId = accountExtra.Id, CreationDate = DateTime.Now, Number = "VIN003", Balance = 0 }
+                        new Account {ClientId = accountVictor.Id, CreationDate = DateTime.Now, Number = "VIN001", Balance = 4500 },
+                        new Account {ClientId = accountVictor.Id, CreationDate = DateTime.Now, Number = "VIN002", Balance = 14000 },
+                        new Account {ClientId = accountExtra.Id, CreationDate = DateTime.Now, Number = "VIN003", Balance = 20000 }
                 };
                     context.Accounts.AddRange(accounts);
                     context.SaveChanges();

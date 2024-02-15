@@ -245,6 +245,7 @@ namespace HomeBankingMindHub.Controllers
                     LastName = client.LastName,
                     Accounts = client.Accounts.Select(ac => new AccountDTO
                     {
+                        Id = ac.Id,
                         Balance = ac.Balance,
                         CreationDate = ac.CreationDate,
                         Number = ac.Number

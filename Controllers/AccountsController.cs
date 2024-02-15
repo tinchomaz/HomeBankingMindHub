@@ -57,7 +57,8 @@ namespace HomeBankingMindHub.Controllers
                     {
                         var newAccountDTO = new AccountDTO
                         {
-                            
+                            Id = account.Id,
+
                             Number = account.Number,
 
                             CreationDate = account.CreationDate,
@@ -65,6 +66,7 @@ namespace HomeBankingMindHub.Controllers
                             Transactions = account.Transactions.Select(ts => new TransactionDTO
 
                             {
+                                Id = ts.Id,
 
                                 Type = ts.Type.ToString(),
 
@@ -111,7 +113,6 @@ namespace HomeBankingMindHub.Controllers
             try
 
             {
-
                 var account = _accountRepository.FindById(id);
 
                 if (account == null)
@@ -120,6 +121,7 @@ namespace HomeBankingMindHub.Controllers
                 var accountDTO = new AccountDTO
 
                 {
+                        Id = account.Id, 
 
                         Number = account.Number,
 
@@ -128,6 +130,7 @@ namespace HomeBankingMindHub.Controllers
                         Transactions = account.Transactions.Select(ts => new TransactionDTO
 
                     {
+                            Id = ts.Id,
 
                             Type = ts.Type.ToString(),
 

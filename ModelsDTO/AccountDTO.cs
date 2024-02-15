@@ -10,6 +10,7 @@ namespace HomeBankingMindHub.ModelsDTO
     public class AccountDTO
 
     {
+        public long Id {  get; set; }
 
         public string Number { get; set; }
 
