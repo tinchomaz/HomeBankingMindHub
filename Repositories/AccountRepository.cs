@@ -40,5 +40,10 @@ namespace HomeBankingMindHub.Repositories
             .ToList();
 
         }
+
+        public Account FindAccountByNumber(string number)
+        {
+            return FindByCondition(account => account.Number == number).FirstOrDefault();
+        }
     }
 }

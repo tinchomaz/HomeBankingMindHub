@@ -347,10 +347,13 @@ namespace HomeBankingMindHub.Controllers
 
                 if (client.Accounts.Count == 3)
                     return StatusCode(403, "Tienes el limite de 3 cuentas ya creadas");
-
+                string random;
+                do {
+                    random = "VIN-" + new Random().Next(1,100000000).ToString("D8");
+                } while (_accountRepository.FindAccountByNumber(random) != null);
                 var newAccount = new Account
                 {
-                    Number = "VIN-" + new Random().Next(1000000).ToString(),
+                    Number =  random,
                     CreationDate = DateTime.Now,
                     Balance = 0,
                     ClientId = client.Id
