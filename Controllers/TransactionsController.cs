@@ -75,7 +75,7 @@ namespace HomeBankingMindHub.Controllers
                 }
 
                 //buscamos la cuenta de destino
-                Account toAccount = _accountRepository.FinByNumber(transferDTO.ToAccountNumber);
+                Account toAccount = _accountRepository.FindAccountByNumber(transferDTO.ToAccountNumber);
                 if (toAccount == null)
                 {
                     return StatusCode(403,"Cuenta de destino no existe");

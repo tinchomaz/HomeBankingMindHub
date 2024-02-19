@@ -348,10 +348,14 @@ namespace HomeBankingMindHub.Controllers
 
                 if (client.Accounts.Count == 3)
                     return StatusCode(403, "Tienes el limite de 3 cuentas ya creadas");
-
+                string random;
+                do
+                {
+                    random = "VIN-" + new Random().Next(1, 100000000).ToString("D8");
+                } while (_accountRepository.FindAccountByNumber(random) != null);
                 var newAccount = new Account
                 {
-                    Number = "VIN-" + new Random().Next(1000000).ToString(),
+                    Number = random,
                     CreationDate = DateTime.Now,
                     Balance = 0,
                     ClientId = client.Id
@@ -408,18 +412,14 @@ namespace HomeBankingMindHub.Controllers
                     return forbidResult;
                 }
 
-                var contCards = 0;
-
                 foreach(Card card in client.Cards)
                 {
                     if(card.Type.ToString() == cardDTO.Type)
                     {
-                        contCards++;
+                        if (card.Color.ToString() == cardDTO.Color.ToString())
+                            return StatusCode(403, "No podes tener mas de 1 mismo tipo de tarjeta");
                     }
                 }
-
-                if (contCards >= 3)
-                    return StatusCode(403, "el cliente ya tiene 3 tarjetas del mismo tipo");
 
                 var random = new Random();
 
