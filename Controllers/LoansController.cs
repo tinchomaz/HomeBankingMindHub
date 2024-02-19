@@ -33,6 +33,22 @@ namespace HomeBankingMindHub.Controllers
             _transactionRepository = transactionRepository;
         }
 
+        [HttpGet]
+        public IActionResult GetLoans() {
+            try
+            {
+                var loans = _loanRepository.GetAll();
+                if (loans.IsNullOrEmpty())
+                    return StatusCode(204, "No Loans");
+
+                return Ok(loans);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         public IActionResult CreateLoan([FromBody] LoanApplicationDTO loanApplicationDTO)
         {
@@ -59,13 +75,30 @@ namespace HomeBankingMindHub.Controllers
 
                 var account = _accountRepository.FinByNumber(loanApplicationDTO.ToAccountNumber);
                 if (account == null)
-                    return StatusCode(403, "La cuenta destino esta vacia");
+                    return StatusCode(403, "La cuenta destino esta vacia o no existe");
 
                 if (account.ClientId != client.Id)
                     return StatusCode(403, "La cuenta no pertenece al cliente");
 
                 var clientLoan = new ClientLoan();
-                _clientLoanRepository.Save(new clientLoan);
+                clientLoan.Amount = loanApplicationDTO.Amount * 1.20;
+                clientLoan.Payments = loanApplicationDTO.Payments;
+                clientLoan.ClientId = client.Id;
+                clientLoan.LoanId = loanApplicationDTO.LoanId;
+
+                _clientLoanRepository.Save(clientLoan);
+
+                var transaction = new Transaction();
+                transaction.Type = TransactionType.CREDIT;
+                transaction.Amount = loanApplicationDTO.Amount;
+                transaction.Description = "Deposit for Loan " + loan.Name;
+                transaction.AccountId = account.Id;
+
+                _transactionRepository.Save(transaction);
+
+                account.Balance += loanApplicationDTO.Amount;
+
+                _accountRepository.Save(account);
 
                 return Ok();
             }

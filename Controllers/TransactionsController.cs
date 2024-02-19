@@ -58,6 +58,9 @@ namespace HomeBankingMindHub.Controllers
                     return Forbid("Monto o descripción no proporcionados.");
                 }
 
+                if (transferDTO.Amount < 0)
+                    return StatusCode(403, "El monto no puede ser negativo");
+
                 //buscamos las cuentas
                 Account fromAccount = _accountRepository.FinByNumber(transferDTO.FromAccountNumber);
                 if (fromAccount == null)
