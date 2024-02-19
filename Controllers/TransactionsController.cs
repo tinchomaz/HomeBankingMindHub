@@ -62,7 +62,7 @@ namespace HomeBankingMindHub.Controllers
                     return StatusCode(403,"El monto no puede ser negativo");
 
                 //buscamos las cuentas
-                Account fromAccount = _accountRepository.FinByNumber(transferDTO.FromAccountNumber);
+                Account fromAccount = _accountRepository.FindAccountByNumber(transferDTO.FromAccountNumber);
                 if (fromAccount == null)
                 {
                     return StatusCode(403,"Cuenta de origen no existe");
