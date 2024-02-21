@@ -412,14 +412,18 @@ namespace HomeBankingMindHub.Controllers
                     return forbidResult;
                 }
 
+                var contCards = 0;
+
                 foreach(Card card in client.Cards)
                 {
                     if(card.Type.ToString() == cardDTO.Type)
                     {
-                        if (card.Color.ToString() == cardDTO.Color.ToString())
-                            return StatusCode(403, "No podes tener mas de 1 mismo tipo de tarjeta");
+                        contCards++;
                     }
                 }
+
+                if (contCards >= 3)
+                    return StatusCode(403, "el cliente ya tiene 3 tarjetas del mismo tipo");
 
                 var random = new Random();
 
