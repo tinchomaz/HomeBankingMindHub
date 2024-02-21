@@ -4,6 +4,7 @@ using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories;
 using HomeBankingMindHub.Repositories.Interfaces;
+using HomeBankingMindHub.Services;
 using Microsoft.AspNetCore.Http;
 
 using Microsoft.AspNetCore.Mvc;
@@ -27,16 +28,14 @@ namespace HomeBankingMindHub.Controllers
     public class ClientsController : ControllerBase
 
     {
-
-        private IClientRepository _clientRepository;
-
+        private readonly IClientService _clientService;
         private IAccountRepository _accountRepository;
 
         private ICardRepository _cardRepository;
 
-        public ClientsController(IClientRepository clientRepository, IAccountRepository accountRepository, ICardRepository cardRepository)
+        public ClientsController(IClientService clientService,IAccountRepository accountRepository, ICardRepository cardRepository)
         {
-            _clientRepository = clientRepository;
+            _clientService = clientService;
             _accountRepository = accountRepository;
             _cardRepository = cardRepository;
         }
@@ -64,167 +63,35 @@ namespace HomeBankingMindHub.Controllers
         [HttpGet]
 
         public IActionResult Get()
-
         {
             try
             {
-                var clients = _clientRepository.GetAllClients();
-
-                var clientsDTO = new List<ClientDTO>();
-
-                foreach (Client client in clients)
-
-                {
-                    var newClientDTO = new ClientDTO
-                    {
-                        Email = client.Email,
-
-                        FirstName = client.FirstName,
-
-                        LastName = client.LastName,
-
-                        Accounts = client.Accounts.Select(ac => new AccountDTO
-
-                        {
-                            Balance = ac.Balance,
-
-                            CreationDate = ac.CreationDate,
-
-                            Number = ac.Number
-
-                        }).ToList(),
-
-                        Loans = client.ClientLoans.Select(cl => new ClientLoanDTO
-                        {
-                            LoanId = cl.LoanId,
-                            Name = cl.Loan.Name,
-                            Amount = cl.Amount,
-                            Payments = int.Parse(cl.Payments)
-                        }).ToList(),
-
-                        Credits = client.ClientLoans.Select(cl => new ClientLoanDTO
-                        {
-                            LoanId = cl.LoanId,
-                            Name = cl.Loan.Name,
-                            Amount = cl.Amount,
-                            Payments = int.Parse(cl.Payments)
-                        }).ToList(),
-
-                        Cards = client.Cards.Select(c => new CardDTO
-                        {
-                            CardHolder = c.CardHolder,
-                            Color = c.Color.ToString(),
-                            Cvv = c.Cvv,
-                            FromDate = c.FromDate,
-                            Number = c.Number,
-                            ThruDate = c.ThruDate,
-                            Type = c.Type.ToString()
-                        }).ToList()
-                    };
-
-
-
-                    clientsDTO.Add(newClientDTO);
-
-                }
-                //PREGUNTAR POR QUE NO DEVUELVE EL MENSAJE
-                if (clientsDTO.Count() == 0)
-                    return StatusCode(204,"No hay Clientes");
-
-                return Ok(clientsDTO);
-
+                return Ok(_clientService.getAllClients());
             }
-
             catch (Exception ex)
-
             {
-
                 return StatusCode(500, ex.Message);
-
             }
-
         }
 
         //Get para recibir por id
         [HttpGet("{id}")]
 
         public IActionResult Get(long id)
-
         {
-
             try
-
             {
-
-                var client = _clientRepository.FindById(id);
-
-                if (client == null)
-
-                {
+                if (id < 0)
+                    return BadRequest("id invalido");
+                var clientDTO = _clientService.getClientById(id);
+                if (clientDTO == null)
                     return NotFound();
-                }
-
-                var clientDTO = new ClientDTO
-
-                {
-
-                    Email = client.Email,
-
-                    FirstName = client.FirstName,
-
-                    LastName = client.LastName,
-
-                    Accounts = client.Accounts.Select(ac => new AccountDTO
-
-                    {
-                        Balance = ac.Balance,
-                        CreationDate = ac.CreationDate,
-                        Number = ac.Number
-                    }).ToList(),
-
-                    Loans = client.ClientLoans.Select(cl => new ClientLoanDTO
-                    {
-                        LoanId = cl.LoanId,
-                        Name = cl.Loan.Name,
-                        Amount = cl.Amount,
-                        Payments = int.Parse(cl.Payments)
-                    }).ToList(),
-
-                    Credits = client.ClientLoans.Select(cl => new ClientLoanDTO
-                    {
-                        LoanId = cl.LoanId,
-                        Name = cl.Loan.Name,
-                        Amount = cl.Amount,
-                        Payments = int.Parse(cl.Payments)
-                    }).ToList(),
-
-                    Cards = client.Cards.Select(c => new CardDTO
-                    {
-                        CardHolder = c.CardHolder,
-                        Color = c.Color.ToString(),
-                        Cvv = c.Cvv,
-                        FromDate = c.FromDate,
-                        Number = c.Number,
-                        ThruDate = c.ThruDate,
-                        Type = c.Type.ToString()
-                    }).ToList()
-
-                };
-
-
-
                 return Ok(clientDTO);
-
             }
-
             catch (Exception ex)
-
             {
-
                 return StatusCode(500, ex.Message);
-
             }
-
         }
 
         [HttpGet("current")]
