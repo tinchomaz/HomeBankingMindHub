@@ -419,7 +419,7 @@ namespace HomeBankingMindHub.Controllers
                             return StatusCode(403, "el cliente solo puede tener 1 tarjeta por cada color");
                     }
                 }
-                var random = new Random()
+                var random = new Random();
                 var newCard = new Card
                 {
                     CardHolder = client.FirstName + " " + client.LastName,
