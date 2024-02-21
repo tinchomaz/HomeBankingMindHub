@@ -412,21 +412,14 @@ namespace HomeBankingMindHub.Controllers
                     return forbidResult;
                 }
 
-                var contCards = 0;
-
                 foreach(Card card in client.Cards)
                 {
-                    if(card.Type.ToString() == cardDTO.Type)
+                    if(card.Color.ToString() == cardDTO.Color)
                     {
-                        contCards++;
+                            return StatusCode(403, "el cliente solo puede tener 1 tarjeta por cada color");
                     }
                 }
-
-                if (contCards >= 3)
-                    return StatusCode(403, "el cliente ya tiene 3 tarjetas del mismo tipo");
-
-                var random = new Random();
-
+                var random = new Random()
                 var newCard = new Card
                 {
                     CardHolder = client.FirstName + " " + client.LastName,
