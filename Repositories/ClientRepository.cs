@@ -1,4 +1,5 @@
 ﻿using HomeBankingMindHub.Models;
+using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace HomeBankingMindHub.Repositories
         private IQueryable<Client> IncludeMetodo(IQueryable<Client> query)
         {
             return query.Include(client => client.Accounts)
+                            .ThenInclude(ac => ac.Transactions)
                         .Include(client => client.ClientLoans)
                             .ThenInclude(cl => cl.Loan)
                         .Include(client => client.Cards);

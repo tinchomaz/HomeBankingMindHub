@@ -12,6 +12,7 @@ namespace HomeBankingMindHub.Repositories
 
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
+        //Es la relacion con la base de datos
         protected HomeBankingContext RepositoryContext { get; set; }
 
         public RepositoryBase(HomeBankingContext repositoryContext)
@@ -21,7 +22,7 @@ namespace HomeBankingMindHub.Repositories
 
         public IQueryable<T> FindAll()
         {
-            //return this.RepositoryContext.Set<T>().AsNoTracking();
+            //El set T trae un conjunto de T
             return this.RepositoryContext.Set<T>().AsNoTrackingWithIdentityResolution();
         }
 
@@ -55,7 +56,7 @@ namespace HomeBankingMindHub.Repositories
         {
             this.RepositoryContext.Set<T>().Remove(entity);
         }
-
+        //Guarda los cambios de la tabla
         public void SaveChanges()
         {
             this.RepositoryContext.SaveChanges();

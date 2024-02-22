@@ -9,8 +9,11 @@ namespace HomeBankingMindHub.ModelsDTO
         public double Amount { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        public Account Account { get; set; }
 
+        public TransactionDTO()
+        {
+
+        }
         public TransactionDTO(Transaction transaction)
         {
             Id = transaction.Id;

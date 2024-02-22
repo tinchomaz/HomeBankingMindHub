@@ -1,4 +1,5 @@
 ﻿using HomeBankingMindHub.Models;
+using HomeBankingMindHub.ModelsDTO;
 using System.Collections.Generic;
 
 namespace HomeBankingMindHub.Repositories.Interfaces
@@ -9,6 +10,5 @@ namespace HomeBankingMindHub.Repositories.Interfaces
         void Save(Client client);
         Client FindById(long id);
         Client FindByEmail(string email);
-
     }
 }

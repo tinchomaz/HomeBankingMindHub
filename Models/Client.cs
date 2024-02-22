@@ -1,4 +1,5 @@
 ﻿using HomeBankingMindHub.Models;
+using HomeBankingMindHub.ModelsDTO;
 
 namespace HomeBankingMindHub.Models
 {
@@ -12,5 +13,14 @@ namespace HomeBankingMindHub.Models
         public ICollection<Account> Accounts { get; set; }
         public ICollection<ClientLoan> ClientLoans { get; set; }
         public ICollection<Card> Cards { get; set; }
+
+        public Client(SignUpClientDTO client)
+        {
+            FirstName = client.FirstName;
+            LastName = client.LastName;
+            Email = client.Email;
+            Password = client.Password;
+        }
+        public Client() { }
     }
 }
