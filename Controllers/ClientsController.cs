@@ -4,7 +4,7 @@ using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories;
 using HomeBankingMindHub.Repositories.Interfaces;
-using HomeBankingMindHub.Services;
+using HomeBankingMindHub.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Linq;
+using System.Text.RegularExpressions;
 
 
 
@@ -89,8 +90,8 @@ namespace HomeBankingMindHub.Controllers
                 IActionResult logued = Logued();
                 if (logued != null)
                     return logued;
-                Client client = _clientService.FindClientByEmail(User.FindFirst("Client").Value);
-                return Ok(new ClientDTO(client));
+                ClientDTO client = new ClientDTO(_clientService.FindClientByEmail(User.FindFirst("Client").Value));
+                return Ok(client);
             }
             catch (Exception ex)
             {
@@ -103,15 +104,8 @@ namespace HomeBankingMindHub.Controllers
         {
             try
             {
-                //validamos datos antes
-                if (String.IsNullOrEmpty(client.Email) || String.IsNullOrEmpty(client.Password) || String.IsNullOrEmpty(client.FirstName) || String.IsNullOrEmpty(client.LastName))
-                    return StatusCode(401, "datos inválidos");
-                //buscamos si ya existe el usuario
-                Client user = _clientService.FindClientByEmail(client.Email);
-                if (user != null)
-                    return StatusCode(403, "Email está en uso");
-                _clientService.SaveClient(client);
-                return Created("", client);
+                _clientService.SaveClient(client,out int statusCode,out string? message);
+                return StatusCode(statusCode,message);
             }
             catch (Exception ex)
             {
@@ -145,9 +139,8 @@ namespace HomeBankingMindHub.Controllers
                 if (logued != null)
                     return logued;
                 var client = _clientService.FindClientByEmail(User.FindFirst("Client").Value);
-                if (client.Accounts.Count == 3)
-                    return StatusCode(403, "Tienes el limite de 3 cuentas ya creadas");
-                return Created("",_clientService.SaveAccount(client));
+                _clientService.SaveAccount(client,out int statusCode,out string? message);
+                return StatusCode(statusCode, message);
             }
             catch (Exception ex)
             {
@@ -175,23 +168,15 @@ namespace HomeBankingMindHub.Controllers
         [HttpPost("current/cards")]
         public IActionResult CreateCard([FromBody] CardDTO cardDTO)
         {
+            Console.WriteLine("prueba");
             try
             {
                 IActionResult logued = Logued();
                 if (logued != null)
-                {
                     return logued;
-                }
                 var client = _clientService.FindClientByEmail(User.FindFirst("Client").Value);
-                foreach (Card card in client.Cards)
-                {
-                    if (card.Color.ToString() == cardDTO.Color)
-                    {
-                        return StatusCode(403, "el cliente solo puede tener 1 tarjeta por cada color");
-                    }
-                }
-                CardDTO cardCreated = _clientService.SaveCard(client,cardDTO);
-                return Created("", cardDTO);
+                _clientService.SaveCard(client,cardDTO,out int statusCode,out string? message);
+                return StatusCode(statusCode,message);
             }
             catch (Exception ex)
             {

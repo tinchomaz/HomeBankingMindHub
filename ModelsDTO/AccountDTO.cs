@@ -27,7 +27,7 @@ namespace HomeBankingMindHub.ModelsDTO
             CreationDate = account.CreationDate;
             Balance = account.Balance;
             Transactions = account.Transactions.Select(tr => new TransactionDTO {Id = tr.Id,Type = tr.Type.ToString(),
-                Amount = tr.Amount,Description = tr.Description,Date = tr.Date}).ToList();
+            Amount = tr.Amount,Description = tr.Description,Date = tr.Date}).ToList();
         }
     }
 }

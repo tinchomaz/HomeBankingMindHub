@@ -5,6 +5,7 @@ using HomeBankingMindHub.Repositories;
 using HomeBankingMindHub.Repositories.Interfaces;
 using HomeBankingMindHub.Services;
 using HomeBankingMindHub.Services.Implement;
+using HomeBankingMindHub.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -30,15 +31,12 @@ namespace HomeBankingMindHub.Controllers
                 string email = User.FindFirst("Client") != null ? User.FindFirst("Client").Value : string.Empty;
                 if (email == string.Empty)
                     return Forbid("Email vacío");
-                AccountDTO account = _transactionService.PostDTO(transferDTO,email,out int statusCode,out string message);
-                if(account != null)
-                    return Created("Creado con exito",account);
+                 _transactionService.PostDTO(transferDTO,email,out int statusCode,out string message);
                 return StatusCode(statusCode, message);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
-
             }
         }
     }

@@ -6,6 +6,6 @@ namespace HomeBankingMindHub.Services
 {
     public interface ITransactionService
     {
-        AccountDTO? PostDTO(TransferDTO transferDTO,string email,out int statusCode,out string? message);
+        void PostDTO(TransferDTO transferDTO,string email,out int statusCode,out string? message);
     }
 }

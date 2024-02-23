@@ -3,6 +3,7 @@ using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories;
 using HomeBankingMindHub.Repositories.Interfaces;
+using HomeBankingMindHub.Services.Interfaces;
 
 namespace HomeBankingMindHub.Services.Implement
 {
@@ -19,61 +20,61 @@ namespace HomeBankingMindHub.Services.Implement
             _transactionRepository = transactionRepository;
         }
 
-        public AccountDTO PostDTO(TransferDTO transferDTO,string email,out int statusCode,out string message)
+        public void PostDTO(TransferDTO transferDTO,string email,out int statusCode,out string message)
         {
             Client client = _clientRepository.FindByEmail(email);
+            message = null;
+            statusCode = 403;
             if (client == null)
             {
-                statusCode = 403;
                 message = "No existe el cliente";
-                return null;
+                return;
             }
             if (transferDTO.FromAccountNumber == string.Empty || transferDTO.ToAccountNumber == string.Empty)
             {
-                statusCode = 403;
                 message = "Cuenta de origen o cuenta de destino no proporcionada.";
-                return null;
-            }
-            if (transferDTO.FromAccountNumber == transferDTO.ToAccountNumber)
-            {
-                statusCode = 403;
-                message = "No se permite la transferencia a la misma cuenta.";
-                return null;
-            }
-            if (transferDTO.Amount == 0 || transferDTO.Description == string.Empty)
-            {
-                statusCode = 403;
-                message = "Monto o descripción no proporcionados.";
-                return null;
-            }
-            if (transferDTO.Amount < 0)
-            {
-                statusCode = 403;
-                message = "El monto no puede ser negativo";
-                return null;
-            }
-            //buscamos las cuentas
-            Account fromAccount = _accountRepository.FindByNumber(transferDTO.FromAccountNumber);
-            if (fromAccount == null)
-            {
-                statusCode = 403;
-                message = "Cuenta de origen no existe";
-                return null;
-            }
-            //controlamos el monto
-            if (fromAccount.Balance < transferDTO.Amount)
-            {
-                statusCode = 403;
-                message = "Fondos Insuficientes";
-                return null;
+                return;
             }
             //buscamos la cuenta de destino
             Account toAccount = _accountRepository.FindByNumber(transferDTO.ToAccountNumber);
             if (toAccount == null)
             {
-                statusCode = 403;
                 message = "Cuenta Destino no existe";
-                return null;
+                return;
+            }
+            //buscamos las cuentas
+            Account fromAccount = _accountRepository.FindByNumber(transferDTO.FromAccountNumber);
+            if (fromAccount == null)
+            {
+                message = "Cuenta de origen no existe";
+                return;
+            }
+            if (fromAccount.ClientId != client.Id)
+            {
+                message = "La cuenta no pertenece al cliente";
+                return;
+            }
+
+            if (transferDTO.FromAccountNumber == transferDTO.ToAccountNumber)
+            {
+                message = "No se permite la transferencia a la misma cuenta.";
+                return;
+            }
+            if (transferDTO.Amount == 0 || transferDTO.Description == string.Empty)
+            {
+                message = "Monto o descripción no proporcionados.";
+                return;
+            }
+            if (transferDTO.Amount < 0)
+            {
+                message = "El monto no puede ser negativo";
+                return;
+            }
+            //controlamos el monto
+            if (fromAccount.Balance < transferDTO.Amount)
+            {
+                message = "Fondos Insuficientes";
+                return;
             }
             //demas logica para guardado
             //comenzamos con la inserrción de las 2 transacciones realizadas
@@ -95,18 +96,20 @@ namespace HomeBankingMindHub.Services.Implement
                 AccountId = toAccount.Id,
                 Date = DateTime.Now,
             });
-            //seteamos los valores de las cuentas, a la ccuenta de origen le restamos el monto
-            fromAccount.Balance = fromAccount.Balance - transferDTO.Amount;
-            //actualizamos la cuenta de origen
-            _accountRepository.Save(fromAccount);
-            //a la cuenta de destino le sumamos el monto
-            toAccount.Balance = toAccount.Balance + transferDTO.Amount;
-            //actualizamos la cuenta de destino
-            _accountRepository.Save(toAccount);
+            if(message == null)
+            {
+                //seteamos los valores de las cuentas, a la ccuenta de origen le restamos el monto
+                fromAccount.Balance = fromAccount.Balance - transferDTO.Amount;
+                //actualizamos la cuenta de origen
+                _accountRepository.Save(fromAccount);
+                //a la cuenta de destino le sumamos el monto
+                toAccount.Balance = toAccount.Balance + transferDTO.Amount;
+                //actualizamos la cuenta de destino
+                _accountRepository.Save(toAccount);
+                statusCode = 200;
+                message = "Transaccion realizada";
+            }
 
-            statusCode = 200;
-            message = null;
-            return new(fromAccount);
         }
     }
 }

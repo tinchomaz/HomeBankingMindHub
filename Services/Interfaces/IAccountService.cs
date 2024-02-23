@@ -1,7 +1,7 @@
 ﻿using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 
-namespace HomeBankingMindHub.Services
+namespace HomeBankingMindHub.Services.Interfaces
 {
     public interface IAccountService
     {

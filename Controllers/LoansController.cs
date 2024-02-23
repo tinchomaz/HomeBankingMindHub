@@ -3,7 +3,7 @@ using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories;
 using HomeBankingMindHub.Repositories.Interfaces;
-using HomeBankingMindHub.Services;
+using HomeBankingMindHub.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

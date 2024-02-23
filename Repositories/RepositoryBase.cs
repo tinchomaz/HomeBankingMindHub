@@ -2,10 +2,9 @@
 using System.Linq.Expressions;
 using System.Linq;
 using System;
-using HomeBankingMindHub.Models;
 using Microsoft.EntityFrameworkCore;
-using HomeBankingMindHub.Models;
 using HomeBankingMindHub.Repositories.Interfaces;
+using HomeBankingMindHub.DataBase;
 
 namespace HomeBankingMindHub.Repositories
 {

@@ -1,6 +1,7 @@
 ﻿using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories.Interfaces;
+using HomeBankingMindHub.Services.Interfaces;
 
 namespace HomeBankingMindHub.Services.Implement
 {

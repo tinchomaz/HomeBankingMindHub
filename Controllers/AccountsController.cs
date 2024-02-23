@@ -1,7 +1,7 @@
 ﻿using HomeBankingMindHub.Models;
 using HomeBankingMindHub.ModelsDTO;
 using HomeBankingMindHub.Repositories.Interfaces;
-using HomeBankingMindHub.Services;
+using HomeBankingMindHub.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 //Permite usar las etiquetas http
 using Microsoft.AspNetCore.Mvc;

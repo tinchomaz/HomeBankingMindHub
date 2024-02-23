@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace HomeBankingMindHub.Models
+namespace HomeBankingMindHub.DataBase
 {
     public class HomeBankingContext : DbContext
     {
