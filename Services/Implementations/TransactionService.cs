@@ -54,7 +54,6 @@ namespace HomeBankingMindHub.Services.Implement
                 message = "La cuenta no pertenece al cliente";
                 return;
             }
-
             if (transferDTO.FromAccountNumber == transferDTO.ToAccountNumber)
             {
                 message = "No se permite la transferencia a la misma cuenta.";
@@ -70,6 +69,15 @@ namespace HomeBankingMindHub.Services.Implement
                 message = "El monto no puede ser negativo";
                 return;
             }
+            /*verificar que no tenga mas de 2 decimales NO FUNCIONA
+            string amountDec = transferDTO.Amount.ToString();
+            int decPointIndex = amountDec.IndexOf('.');
+            if (decPointIndex != -1 && (amountDec.Length - decPointIndex) > 3)
+            {
+                message = "El monto no puede tener mas de dos decimales";
+                return;
+            }
+            */
             //controlamos el monto
             if (fromAccount.Balance < transferDTO.Amount)
             {
