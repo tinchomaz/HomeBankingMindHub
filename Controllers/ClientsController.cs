@@ -94,14 +94,6 @@ namespace HomeBankingMindHub.Controllers
 
                         }).ToList(),
 
-                        Loans = client.ClientLoans.Select(cl => new ClientLoanDTO
-                        {
-                            LoanId = cl.LoanId,
-                            Name = cl.Loan.Name,
-                            Amount = cl.Amount,
-                            Payments = int.Parse(cl.Payments)
-                        }).ToList(),
-
                         Credits = client.ClientLoans.Select(cl => new ClientLoanDTO
                         {
                             LoanId = cl.LoanId,
@@ -181,15 +173,6 @@ namespace HomeBankingMindHub.Controllers
                         CreationDate = ac.CreationDate,
                         Number = ac.Number
                     }).ToList(),
-
-                    Loans = client.ClientLoans.Select(cl => new ClientLoanDTO
-                    {
-                        LoanId = cl.LoanId,
-                        Name = cl.Loan.Name,
-                        Amount = cl.Amount,
-                        Payments = int.Parse(cl.Payments)
-                    }).ToList(),
-
                     Credits = client.ClientLoans.Select(cl => new ClientLoanDTO
                     {
                         LoanId = cl.LoanId,
@@ -412,7 +395,8 @@ namespace HomeBankingMindHub.Controllers
                 {
                     if (card.Color.ToString() == cardDTO.Color)
                     {
-                        return StatusCode(403, "el cliente solo puede tener 1 tarjeta por cada color");
+                        if(card.Type.ToString() == cardDTO.Color)
+                            return StatusCode(403, "el cliente solo puede tener 1 tarjeta por cada color");
                     }
                 }
                 var random = new Random();
