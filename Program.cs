@@ -12,20 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Permite el uso de la carpeta Pages
 builder.Services.AddRazorPages();
-
 //Agrega los controladores y config JSON
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 //Se inyectan los servicios
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
+
 //Configuracion del context de la DB con Entity Framework
 builder.Services.AddDbContext<HomeBankingContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("HomeBankingConexion")));
-//Configuracion de base de datos
-builder.Services.AddDbContext<HomeBankingContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("HomeBankingConexion")));
 
 //Inyeccion de repositorios
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
@@ -35,7 +33,7 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ILoanRepositry, LoanRepository>();
 builder.Services.AddScoped<IClientLoanRepository, ClientLoanRepository>();
 
-//Configuracion Auth con cookies
+//Auth cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
       .AddCookie(options =>
       {
@@ -88,7 +86,7 @@ else
 app.UseDefaultFiles();
 app.UseStaticFiles();
 //Mapea las rutas
-app.UseRouting();
+app.UseRouting();   
 //le decimos que use autenticación
 app.UseAuthentication();
 //que use la autorizacion

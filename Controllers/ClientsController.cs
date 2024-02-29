@@ -21,7 +21,7 @@ using System.Text.RegularExpressions;
 namespace HomeBankingMindHub.Controllers
 
 {
-
+    //[Authorize] me da error al probarlo,devuelve un 302
     [Route("api/[controller]")]
 
     [ApiController]
@@ -50,7 +50,6 @@ namespace HomeBankingMindHub.Controllers
         }
 
         [HttpGet]
-
         public IActionResult Get()
         {
             try

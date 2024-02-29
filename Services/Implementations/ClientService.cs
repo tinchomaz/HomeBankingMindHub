@@ -96,9 +96,11 @@ namespace HomeBankingMindHub.Services.Implement
                 message = "Tienes el limite de 3 cuentas ya creadas";
                 return;
             }
+            int randomNumber = new Random().Next(100000000);
+            string formattedNumber = randomNumber.ToString("D8");
             var newAccount = new Account
             {
-                Number = "VIN-" + new Random().Next(1000000).ToString(),
+                Number = "VIN-" + formattedNumber,
                 CreationDate = DateTime.Now,
                 Balance = 0,
                 ClientId = client.Id
